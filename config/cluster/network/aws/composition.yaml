@@ -9,16 +9,16 @@ spec:
     apiVersion: platformref.crossplane.io/v1alpha1
     kind: XNetwork
   patchSets:
-  - name: providerConfigAws
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.providerConfig.aws
-      toFieldPath: spec.providerConfigRef.name
-  - name: network-id
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.id
-      toFieldPath: metadata.labels[networks.aws.platformref.crossplane.io/network-id]
+    - name: providerConfigAws
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.providerConfig.aws
+          toFieldPath: spec.providerConfigRef.name
+    - name: network-id
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.id
+          toFieldPath: metadata.labels[networks.aws.platformref.crossplane.io/network-id]
   resources:
     - name: platformref-vpc
       base:
@@ -26,7 +26,7 @@ spec:
         kind: VPC
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             cidrBlock: 192.168.0.0/16
             enableDnsSupport: true
             enableDnsHostNames: true
@@ -45,7 +45,7 @@ spec:
         kind: InternetGateway
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             vpcIdSelector:
               matchControllerRef: true
       patches:
@@ -55,22 +55,22 @@ spec:
           patchSetName: network-id
         - fromFieldPath: spec.id
           toFieldPath: spec.forProvider.tags.Name
-    - name: subnet-public-west-2a
+    - name: subnet-public-eu-central-1a
       base:
         apiVersion: ec2.aws.upbound.io/v1beta1
         kind: Subnet
         metadata:
           labels:
-            zone: us-west-2a
+            zone: eu-central-1a
             access: public
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             mapPublicIpOnLaunch: true
             cidrBlock: 192.168.0.0/18
             vpcIdSelector:
               matchControllerRef: true
-            availabilityZone: us-west-2a
+            availabilityZone: eu-central-1a
             tags:
               kubernetes.io/role/elb: "1"
       patches:
@@ -83,22 +83,22 @@ spec:
         - type: ToCompositeFieldPath
           fromFieldPath: metadata.annotations[crossplane.io/external-name]
           toFieldPath: status.subnetIds[0]
-    - name: subnet-public-west-2b
+    - name: subnet-public-eu-central-1b
       base:
         apiVersion: ec2.aws.upbound.io/v1beta1
         kind: Subnet
         metadata:
           labels:
-            zone: us-west-2b
+            zone: eu-central-1b
             access: public
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             mapPublicIpOnLaunch: true
             cidrBlock: 192.168.64.0/18
             vpcIdSelector:
               matchControllerRef: true
-            availabilityZone: us-west-2b
+            availabilityZone: eu-central-1b
             tags:
               kubernetes.io/role/elb: "1"
       patches:
@@ -111,21 +111,21 @@ spec:
         - type: ToCompositeFieldPath
           fromFieldPath: metadata.annotations[crossplane.io/external-name]
           toFieldPath: status.subnetIds[1]
-    - name: subnet-private-west-2a
+    - name: subnet-private-eu-central-1a
       base:
         apiVersion: ec2.aws.upbound.io/v1beta1
         kind: Subnet
         metadata:
           labels:
-            zone: us-west-2a
+            zone: eu-central-1a
             access: private
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             cidrBlock: 192.168.128.0/18
             vpcIdSelector:
               matchControllerRef: true
-            availabilityZone: us-west-2a
+            availabilityZone: eu-central-1a
             tags:
               shared: ""
               kubernetes.io/role/elb: "1"
@@ -145,21 +145,21 @@ spec:
         - type: ToCompositeFieldPath
           fromFieldPath: metadata.annotations[crossplane.io/external-name]
           toFieldPath: status.subnetIds[2]
-    - name: subnet-private-west-2b
+    - name: subnet-private-eu-central-1b
       base:
         apiVersion: ec2.aws.upbound.io/v1beta1
         kind: Subnet
         metadata:
           labels:
-            zone: us-west-2b
+            zone: eu-central-1b
             access: private
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             cidrBlock: 192.168.192.0/18
             vpcIdSelector:
               matchControllerRef: true
-            availabilityZone: us-west-2b
+            availabilityZone: eu-central-1b
             tags:
               shared: ""
               kubernetes.io/role/elb: "1"
@@ -185,7 +185,7 @@ spec:
         kind: RouteTable
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             vpcIdSelector:
               matchControllerRef: true
       patches:
@@ -201,7 +201,7 @@ spec:
         kind: Route
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             destinationCidrBlock: 0.0.0.0/0
             gatewayIdSelector:
               matchControllerRef: true
@@ -220,14 +220,14 @@ spec:
         kind: RouteTableAssociation
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             destinationCidrBlock: 0.0.0.0/0
             routeTableIdSelector:
               matchControllerRef: true
             subnetIdSelector:
               matchControllerRef: true
               matchLabels:
-                zone: us-west-2a
+                zone: eu-central-1a
                 access: public
       patches:
         - type: PatchSet
@@ -242,14 +242,14 @@ spec:
         kind: RouteTableAssociation
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             destinationCidrBlock: 0.0.0.0/0
             routeTableIdSelector:
               matchControllerRef: true
             subnetIdSelector:
               matchControllerRef: true
               matchLabels:
-                zone: us-west-2b
+                zone: eu-central-1b
                 access: public
       patches:
         - type: PatchSet
@@ -264,14 +264,14 @@ spec:
         kind: RouteTableAssociation
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             destinationCidrBlock: 0.0.0.0/0
             routeTableIdSelector:
               matchControllerRef: true
             subnetIdSelector:
               matchControllerRef: true
               matchLabels:
-                zone: us-west-2a
+                zone: eu-central-1a
                 access: private
       patches:
         - type: PatchSet
@@ -286,14 +286,14 @@ spec:
         kind: RouteTableAssociation
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             destinationCidrBlock: 0.0.0.0/0
             routeTableIdSelector:
               matchControllerRef: true
             subnetIdSelector:
               matchControllerRef: true
               matchLabels:
-                zone: us-west-2b
+                zone: eu-central-1b
                 access: private
       patches:
         - type: PatchSet
@@ -308,7 +308,7 @@ spec:
         kind: MainRouteTableAssociation
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             routeTableIdSelector:
               matchControllerRef: true
             vpcIdSelector:
@@ -326,7 +326,7 @@ spec:
         kind: SecurityGroup
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             name: allow_db_access
             description: Allow DB inbound traffic
             tags:
@@ -352,9 +352,9 @@ spec:
             type: ingress
             securityGroupIdSelector:
               matchControllerRef: true
-            region: us-west-2
+            region: eu-central-1
             cidrBlocks:
-            - 0.0.0.0/0
+              - 0.0.0.0/0
             protocol: tcp
             fromPort: 5432
             toPort: 5432
@@ -372,9 +372,9 @@ spec:
             type: ingress
             securityGroupIdSelector:
               matchControllerRef: true
-            region: us-west-2
+            region: eu-central-1
             cidrBlocks:
-            - 0.0.0.0/0
+              - 0.0.0.0/0
             protocol: tcp
             fromPort: 3306
             toPort: 3306
@@ -383,4 +383,3 @@ spec:
           patchSetName: providerConfigAws
         - fromFieldPath: metadata.name
           toFieldPath: spec.forProvider.tags.Name
-

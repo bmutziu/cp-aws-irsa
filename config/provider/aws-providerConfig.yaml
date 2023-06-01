@@ -6,6 +6,6 @@ spec:
   credentials:
     source: Secret
     secretRef:
-      namespace: crossplane-system
-      name: credentials
-      key: creds
+      namespace: upbound-system
+      name: tf-aws-creds
+      key: credentials

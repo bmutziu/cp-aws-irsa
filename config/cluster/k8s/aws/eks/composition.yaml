@@ -24,7 +24,7 @@ spec:
             resource: cluster
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             roleArnSelector:
               matchControllerRef: true
               matchLabels:
@@ -32,7 +32,7 @@ spec:
             vpcConfig:
               - endpointPrivateAccess: true
                 endpointPublicAccess: true
-            #version: "1.23" # With this remarked out or ommitted, the Region default Kubernetes version will be selected
+            version: "1.27" # With this remarked out or ommitted, the Region default Kubernetes version will be selected
       patches:
         - type: PatchSet
           patchSetName: providerConfigAws
@@ -78,7 +78,7 @@ spec:
         kind: ClusterAuth
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             clusterNameSelector:
               matchControllerRef: true
       patches:
@@ -100,7 +100,7 @@ spec:
         kind: NodeGroup
         spec:
           forProvider:
-            region: us-west-2
+            region: eu-central-1
             clusterNameSelector:
               matchControllerRef: true
             nodeRoleArnSelector:

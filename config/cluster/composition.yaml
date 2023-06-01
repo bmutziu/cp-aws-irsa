@@ -12,6 +12,7 @@ spec:
         apiVersion: platformref.crossplane.io/v1alpha1
         kind: XNetwork
         spec:
+          id: cp-aws-irsa-id
           providerConfig:
             aws: default #<<<< Change this to match the name of your aws provider config
       patches:
@@ -38,6 +39,10 @@ spec:
         spec:
           providerConfig:
             aws: default #<<<< Change this to match the name of your aws provider config
+          parameters:
+            nodes:
+              count: 3
+              size: small
       patches:
         - fromFieldPath: spec.id
           toFieldPath: spec.id

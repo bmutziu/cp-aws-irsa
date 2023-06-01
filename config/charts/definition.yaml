@@ -50,7 +50,3 @@ spec:
                     type: string
                   gcp:
                     type: string
-
-
-
-
